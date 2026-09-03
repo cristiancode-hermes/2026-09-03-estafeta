@@ -1,0 +1,7 @@
+DEPLOY_DONE 2026-09-03 estafeta
+Caddy: estafeta.proyectos.cristiancode.dev → /opt/data/repositorios/2026-09-03-estafeta/apps/web/dist/web/browser + reverse_proxy :3083
+manage-apis: port 3083 name estafeta dir 2026-09-03-estafeta
+GitHub: https://github.com/cristiancode-hermes/2026-09-03-estafeta
+Landing: proyectos.cristiancode.dev name:'estafeta'
+Portfolio: slug estafeta heading-259 commit ea721cc
+href/link2/link3: 200/200/200

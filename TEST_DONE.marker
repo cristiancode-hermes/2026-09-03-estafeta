@@ -1,0 +1,9 @@
+QA testing complete for 2026-09-03
+Project: estafeta
+Build: ✅ API tsc + Angular production (baseHref=/)
+Tests: 17/17 passing (Jest) · endpoint smoke 28/28 · browser 19/19 (0 console, 0 overflow)
+New tests: existing coverage adequate (ALREADY_IN_BAG, BAG_FULL, QR URL, puntos dispatched, lista↔detalle)
+Issues: 0 graves · 1 menor (ticks Y duplicados si max=1)
+Published: ✅ Caddy (estafeta.proyectos.cristiancode.dev :3083), ✅ Portfolio (es.ts+en.ts+pt.ts ea721cc), ✅ GitHub README, ✅ Landing, ✅ Excel row 100
+QR real: sí | url: /envio/:code
+contraste-hover: PASS
