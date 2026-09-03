@@ -18,6 +18,10 @@ import { ApiService } from '../core/api.service';
         <svg class="chart" viewBox="0 0 560 200" role="img" aria-label="Despachos de 14 días">
           <line x1="40" y1="10" x2="40" y2="170" stroke="currentColor" />
           <line x1="40" y1="170" x2="540" y2="170" stroke="currentColor" />
+          @for (t of yTicks(); track t.label) {
+            <line [attr.x1]="40" [attr.x2]="540" [attr.y1]="t.y" [attr.y2]="t.y" stroke="currentColor" opacity="0.18" />
+            <text x="36" [attr.y]="t.y + 3" text-anchor="end" font-size="9" fill="currentColor">{{ t.label }}</text>
+          }
           @for (p of bars(); track p.date) {
             <rect [attr.x]="p.x" [attr.y]="p.y" [attr.width]="24" [attr.height]="p.h" fill="var(--color-primary)">
               <title>{{ p.date }}: {{ p.value }}</title>
@@ -34,12 +38,16 @@ export class StaffPage implements OnInit {
   readonly today = signal<{ dropped: number; dispatched: number; pickups: number } | null>(null);
   readonly points = signal<{ date: string; value: number }[]>([]);
   readonly bars = signal<Array<{ date: string; value: number; x: number; y: number; h: number; label: string }>>([]);
+  readonly yTicks = signal<Array<{ y: number; label: string }>>([]);
 
   ngOnInit(): void {
     this.api.staffToday().pipe(catchError(() => of(null))).subscribe((t) => this.today.set(t));
     this.api.stats().pipe(catchError(() => of({ points: [] }))).subscribe((s) => {
       this.points.set(s.points);
       const max = Math.max(1, ...s.points.map((p) => p.value));
+      this.yTicks.set(
+        [0.25, 0.5, 0.75, 1].map((f) => ({ y: 170 - f * 140, label: String(Math.round(max * f)) })),
+      );
       this.bars.set(
         s.points.map((p, i) => ({
           date: p.date,
