@@ -1,0 +1,50 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { catchError, of } from 'rxjs';
+import { ApiService } from '../core/api.service';
+import { money, statusLabel, type Shipment } from '../shared/models';
+
+@Component({
+  selector: 'app-confirm',
+  imports: [RouterLink],
+  template: `
+    <main class="wrap">
+      @if (loading()) { <div class="card">Cargando resguardo…</div> }
+      @else if (!sh()) {
+        <section class="screen">
+          <h2>No hay pliego</h2>
+          <a class="btn btn-primary" routerLink="/mis-envios">Mis envíos</a>
+        </section>
+      } @else {
+        <h1>Pliego en saca</h1>
+        <p>Código <span class="mono">{{ sh()!.code }}</span> · {{ statusLabel(sh()!.status) }} · {{ money(sh()!.totalCents) }}</p>
+        @if (qr()) {
+          <div class="qr" [innerHTML]="qr()"></div>
+        }
+        <p><a [href]="sh()!.qrUrl">{{ sh()!.qrUrl }}</a></p>
+        <a class="btn btn-secondary" [routerLink]="['/envio', sh()!.code]">Resguardo público</a>
+      }
+    </main>
+  `,
+})
+export class ConfirmPage implements OnInit {
+  private readonly api = inject(ApiService);
+  private readonly ar = inject(ActivatedRoute);
+  private readonly sanitizer = inject(DomSanitizer);
+  readonly money = money;
+  readonly statusLabel = statusLabel;
+  readonly sh = signal<Shipment | null>(null);
+  readonly qr = signal<SafeHtml | null>(null);
+  readonly loading = signal(true);
+
+  ngOnInit(): void {
+    const code = this.ar.snapshot.paramMap.get('code')!;
+    this.api.shipmentByCode(code).pipe(catchError(() => of(null))).subscribe((s) => {
+      this.loading.set(false);
+      if (!s) return;
+      this.sh.set(s);
+      if (s.qrSvg) this.qr.set(this.sanitizer.bypassSecurityTrustHtml(s.qrSvg));
+    });
+  }
+}

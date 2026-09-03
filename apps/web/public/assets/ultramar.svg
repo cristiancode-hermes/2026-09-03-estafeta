@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Saca de ultramar">
+  <rect width="800" height="450" fill="#1C2230"/>
+  <path d="M40 320 C 180 240, 320 360, 480 280 C 620 210, 720 300, 780 250 L 780 450 L 40 450 Z" fill="#145C3A"/>
+  <rect x="280" y="90" width="240" height="180" fill="#6B1C28"/>
+  <rect x="300" y="110" width="200" height="140" fill="#E8EAEE"/>
+</svg>

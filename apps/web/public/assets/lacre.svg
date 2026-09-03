@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Lacre de estafeta">
+  <rect width="800" height="450" fill="#F3F4F6"/>
+  <rect x="180" y="70" width="440" height="310" fill="#E8EAEE" stroke="#1A1F2B" stroke-width="4"/>
+  <circle cx="400" cy="225" r="70" fill="#6B1C28"/>
+  <circle cx="400" cy="225" r="48" fill="#4A101C"/>
+</svg>

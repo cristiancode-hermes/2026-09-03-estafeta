@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Mostrador de lacre">
+  <rect width="800" height="450" fill="#3D4454"/>
+  <rect x="0" y="260" width="800" height="190" fill="#1A1F2B"/>
+  <rect x="80" y="120" width="640" height="160" fill="#E8EAEE"/>
+  <rect x="120" y="150" width="200" height="90" fill="#6B1C28"/>
+  <circle cx="620" cy="195" r="36" fill="#8A6A12"/>
+  <rect x="0" y="318" width="800" height="14" fill="#6B1C28"/>
+</svg>

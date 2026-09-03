@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Casilleros del mostrador">
+  <rect width="800" height="450" fill="#1A1F2B"/>
+  <rect x="40" y="40" width="720" height="370" fill="#2A3142"/>
+  <g fill="#E8EAEE">
+    <rect x="70" y="70" width="150" height="90"/>
+    <rect x="240" y="70" width="150" height="90"/>
+    <rect x="410" y="70" width="150" height="90"/>
+    <rect x="580" y="70" width="150" height="90"/>
+    <rect x="70" y="180" width="150" height="90"/>
+    <rect x="240" y="180" width="150" height="90"/>
+    <rect x="410" y="180" width="150" height="90"/>
+    <rect x="580" y="180" width="150" height="90"/>
+    <rect x="70" y="290" width="150" height="90"/>
+    <rect x="240" y="290" width="150" height="90"/>
+    <rect x="410" y="290" width="150" height="90"/>
+    <rect x="580" y="290" width="150" height="90"/>
+  </g>
+  <rect x="250" y="185" width="130" height="80" fill="#6B1C28"/>
+</svg>
