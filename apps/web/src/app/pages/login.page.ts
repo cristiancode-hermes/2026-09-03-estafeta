@@ -69,6 +69,7 @@ export class LoginPage {
     this.error.set('');
     this.auth.login({ identifier: this.identifier(), password: this.password() }).subscribe({
       next: () => {
+        this.auth.revalidateSession();
         const ret = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
         void this.router.navigateByUrl(ret);
       },

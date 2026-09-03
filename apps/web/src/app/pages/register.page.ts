@@ -48,7 +48,10 @@ export class RegisterPage {
     this.auth
       .register({ username: this.username(), email: this.email(), password: this.password() })
       .subscribe({
-        next: () => void this.router.navigateByUrl('/'),
+        next: () => {
+          this.auth.revalidateSession();
+          void this.router.navigateByUrl('/');
+        },
         error: (err) => this.error.set(humanizeApiError(err)),
       });
   }

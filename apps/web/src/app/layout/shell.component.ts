@@ -13,21 +13,19 @@ import { ThemeService } from '../core/theme.service';
       <div class="drawer-backdrop" [class.open]="open()" (click)="open.set(false)"></div>
       <nav class="nav-links" [class.open]="open()">
         <a routerLink="/rutas" routerLinkActive="active" (click)="open.set(false)">Rutas</a>
-        @if (auth.isAuthenticated()) {
+        @if (auth.user(); as sessionUser) {
           <a routerLink="/mis-envios" (click)="open.set(false)">Mis envíos</a>
           <a routerLink="/llegadas" (click)="open.set(false)">Casillero</a>
           <a routerLink="/cuenta" (click)="open.set(false)">Cuenta</a>
-        }
-        @if (auth.isStaff()) {
-          <a routerLink="/staff" (click)="open.set(false)">Mostrador</a>
-        }
-        @if (auth.isAdmin()) {
-          <a routerLink="/admin" (click)="open.set(false)">Admin</a>
-        }
-        @if (!auth.isAuthenticated()) {
-          <a class="btn btn-primary" routerLink="/login" (click)="open.set(false)">Entrar</a>
-        } @else {
+          @if (sessionUser.role === 'staff' || sessionUser.role === 'admin') {
+            <a routerLink="/staff" (click)="open.set(false)">Mostrador</a>
+          }
+          @if (sessionUser.role === 'admin') {
+            <a routerLink="/admin" (click)="open.set(false)">Admin</a>
+          }
           <button class="btn btn-ghost" type="button" (click)="auth.logout(); open.set(false)">Salir</button>
+        } @else {
+          <a class="btn btn-primary" routerLink="/login" (click)="open.set(false)">Entrar</a>
         }
         <button class="theme-toggle" type="button" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? 'Activar tema claro' : 'Activar tema oscuro'">
           {{ theme.isDark() ? '☀' : '☾' }}

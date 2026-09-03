@@ -5,6 +5,14 @@ import { Observable, tap, catchError, of, finalize, map } from 'rxjs';
 import type { AuthResponse, User } from '../shared/models';
 import { TOKEN_KEY, API } from '../shared/models';
 
+function readStoredToken(): string | null {
+  try {
+    return localStorage.getItem(TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -13,11 +21,12 @@ export class AuthService {
   private readonly userSignal = signal<User | null>(null);
   private readonly loadingSignal = signal(false);
   private readonly pointsSignal = signal(0);
+  private readonly tokenSignal = signal<string | null>(readStoredToken());
 
   readonly user = this.userSignal.asReadonly();
   readonly loading = this.loadingSignal.asReadonly();
   readonly points = this.pointsSignal.asReadonly();
-  readonly isAuthenticated = computed(() => !!this.getToken());
+  readonly isAuthenticated = computed(() => !!this.tokenSignal() && !!this.userSignal());
   readonly isStaff = computed(() => {
     const r = this.userSignal()?.role;
     return r === 'staff' || r === 'admin';
@@ -29,11 +38,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    try {
-      return localStorage.getItem(TOKEN_KEY);
-    } catch {
-      return null;
-    }
+    return this.tokenSignal() ?? readStoredToken();
   }
 
   private setToken(token: string | null): void {
@@ -43,6 +48,7 @@ export class AuthService {
     } catch {
       /* ignore */
     }
+    this.tokenSignal.set(token);
   }
 
   setUser(user: User | null): void {
@@ -112,7 +118,25 @@ export class AuthService {
   logout(): void {
     this.setToken(null);
     this.userSignal.set(null);
+    this.pointsSignal.set(0);
     void this.router.navigateByUrl('/');
+  }
+
+  /** Re-lee token + usuario para que el shell no quede con auth cacheada (post-login). */
+  revalidateSession(): void {
+    const token = readStoredToken();
+    this.tokenSignal.set(token);
+    if (!token) {
+      this.userSignal.set(null);
+      this.pointsSignal.set(0);
+      return;
+    }
+    const current = this.userSignal();
+    if (current) {
+      this.userSignal.set({ ...current });
+      return;
+    }
+    this.bootstrap();
   }
 
   private applyAuth(res: AuthResponse): void {
